@@ -9,13 +9,16 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.1
   pausable_timer: ^1.0.0+4
+  hive: ^2.1.0
+  hive_flutter: ^1.1.0
+  hive_generator: ^1.1.2
   flutter: 
     sdk: flutter
-  page_view_indicators: ^2.0.0
 
 dev_dependencies: 
   flutter_lints: ^1.0.0
   lints: 1.0.1
+  build_runner:
   flutter_test: 
     sdk: flutter
 

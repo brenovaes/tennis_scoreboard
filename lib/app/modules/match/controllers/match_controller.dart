@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:get/get.dart';
-import 'package:tennis_scoreboard/app/data/models/MatchResult.dart';
-import 'package:tennis_scoreboard/app/data/models/MatchSettings.dart';
+import 'package:tennis_scoreboard/app/data/models/match_result_model.dart';
+import 'package:tennis_scoreboard/app/data/models/match_settings_model.dart';
 import 'package:tennis_scoreboard/app/routes/app_pages.dart';
 
 class MatchController extends GetxController {
@@ -231,6 +231,7 @@ class MatchController extends GetxController {
       firstTeamSets.value++;
       if (firstTeamSets.value > matchSettings.setsQty - firstTeamSets.value) {
         var _matchResult = MatchResult(
+          DateTime.now().millisecondsSinceEpoch,
           matchSettings.teams,
           setsList,
           team,
@@ -264,6 +265,7 @@ class MatchController extends GetxController {
       secondTeamSets.value++;
       if (secondTeamSets.value > matchSettings.setsQty - secondTeamSets.value) {
         var _matchResult = MatchResult(
+          DateTime.now().millisecondsSinceEpoch,
           matchSettings.teams,
           setsList,
           team,
@@ -288,10 +290,11 @@ class MatchController extends GetxController {
           (route) => Get.currentRoute == '/home',
           arguments: _matchResult,
         );
-        //Get.offAndToNamed(Routes.POST_MATCH_COUNTDOWN, arguments: _matchResult);
+      } else {
+        resetGames();
+        currentSet.value++;
       }
     }
-    //}
   }
 
   void _increaseGames(String team) {

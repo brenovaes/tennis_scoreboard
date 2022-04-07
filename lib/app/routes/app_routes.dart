@@ -11,6 +11,7 @@ abstract class Routes {
   static const MATCH = _Paths.MATCH;
   static const POST_MATCH = _Paths.POST_MATCH;
   static const POST_MATCH_COUNTDOWN = _Paths.POST_MATCH_COUNTDOWN;
+  static const RESULTS = _Paths.RESULTS;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const MATCH = '/match';
   static const POST_MATCH = '/post-match';
   static const POST_MATCH_COUNTDOWN = '/post-match-countdown';
+  static const RESULTS = '/results';
 }

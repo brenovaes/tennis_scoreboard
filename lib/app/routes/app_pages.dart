@@ -8,6 +8,8 @@ import 'package:tennis_scoreboard/app/modules/post_match/bindings/post_match_bin
 import 'package:tennis_scoreboard/app/modules/post_match/views/post_match_result_view.dart';
 import 'package:tennis_scoreboard/app/modules/post_match_countdown/bindings/post_match_countdown_binding.dart';
 import 'package:tennis_scoreboard/app/modules/post_match_countdown/views/post_match_countdown_view.dart';
+import 'package:tennis_scoreboard/app/modules/results/bindings/results_binding.dart';
+import 'package:tennis_scoreboard/app/modules/results/views/results_view.dart';
 import 'package:tennis_scoreboard/app/modules/start/bindings/start_binding.dart';
 import 'package:tennis_scoreboard/app/modules/start/views/start_view.dart';
 
@@ -45,6 +47,11 @@ class AppPages {
       name: _Paths.POST_MATCH_COUNTDOWN,
       page: () => const PostMatchCountdownView(),
       binding: PostMatchCountdownBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESULTS,
+      page: () => const ResultsView(),
+      binding: ResultsBinding(),
     ),
   ];
 }

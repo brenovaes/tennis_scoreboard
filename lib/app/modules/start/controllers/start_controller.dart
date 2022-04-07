@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:tennis_scoreboard/app/data/models/MatchSettings.dart';
+import 'package:tennis_scoreboard/app/data/models/match_settings_model.dart';
 
 class StartController extends GetxController {
   final firstTeam = <String>[].obs;

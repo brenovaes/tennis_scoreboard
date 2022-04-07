@@ -55,9 +55,7 @@ class HomeView extends GetView<HomeController> {
                         margin: const EdgeInsets.only(bottom: 50),
                         child: CustomElevatedButton(
                           label: 'Ver histórico de partidas',
-                          onPressed: () {
-                            print('teste123');
-                          },
+                          onPressed: () => Get.toNamed(Routes.RESULTS),
                           backgroundColor: Colors.white,
                         ),
                       ),
