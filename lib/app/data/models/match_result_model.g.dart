@@ -27,13 +27,14 @@ class MatchResultAdapter extends TypeAdapter<MatchResult> {
       fields[3] as String,
       fields[4] as String,
       (fields[5] as Map).cast<String, dynamic>(),
+      fields[6] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, MatchResult obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -45,7 +46,9 @@ class MatchResultAdapter extends TypeAdapter<MatchResult> {
       ..writeByte(4)
       ..write(obj.matchTime)
       ..writeByte(5)
-      ..write(obj.stats);
+      ..write(obj.stats)
+      ..writeByte(6)
+      ..write(obj.date);
   }
 
   @override

@@ -61,26 +61,23 @@ class PostMatchResultView extends GetView<PostMatchController> {
                       Obx(
                         () => SizedBox(
                           width: Get.width,
-                          child: controller.matchResult.value.winner == 'first'
-                              ? controller.matchResult.value.teams.first
-                                          .length >
-                                      1
+                          child: controller.matchResult.winner == 'first'
+                              ? controller.matchResult.teams.first.length > 1
                                   ? Text(
-                                      '${controller.matchResult.value.teams.first.first} e ${controller.matchResult.value.teams.first.last}!',
+                                      '${controller.matchResult.teams.first.first} e ${controller.matchResult.teams.first.last}!',
                                       style: const TextStyle(fontSize: 32),
                                     )
                                   : Text(
-                                      '${controller.matchResult.value.teams.first.first}!',
+                                      '${controller.matchResult.teams.first.first}!',
                                       style: const TextStyle(fontSize: 32),
                                     )
-                              : controller.matchResult.value.teams.last.length >
-                                      1
+                              : controller.matchResult.teams.last.length > 1
                                   ? Text(
-                                      '${controller.matchResult.value.teams.last.first} e ${controller.matchResult.value.teams.last.last}!',
+                                      '${controller.matchResult.teams.last.first} e ${controller.matchResult.teams.last.last}!',
                                       style: const TextStyle(fontSize: 32),
                                     )
                                   : Text(
-                                      '${controller.matchResult.value.teams.last.first}!',
+                                      '${controller.matchResult.teams.last.first}!',
                                       style: const TextStyle(fontSize: 32),
                                     ),
                         ),
@@ -101,17 +98,17 @@ class PostMatchResultView extends GetView<PostMatchController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             PlayersDisplayWidget(
-                              players: controller.matchResult.value.teams.first,
+                              players: controller.matchResult.teams.first,
                             ),
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
-                                child: _buildScores(
-                                    controller.matchResult.value.sets),
+                                child:
+                                    _buildScores(controller.matchResult.sets),
                               ),
                             ),
                             PlayersDisplayWidget(
-                              players: controller.matchResult.value.teams.last,
+                              players: controller.matchResult.teams.last,
                             ),
                           ],
                         ),
@@ -128,9 +125,9 @@ class PostMatchResultView extends GetView<PostMatchController> {
                       ),
                       StatsBarWidget(
                         firstTeamItem: controller
-                            .matchResult.value.stats['firstTeamTotalPoints'],
+                            .matchResult.stats['firstTeamTotalPoints'],
                         secondTeamItem: controller
-                            .matchResult.value.stats['secondTeamTotalPoints'],
+                            .matchResult.stats['secondTeamTotalPoints'],
                       ),
                       const SizedBox(
                         height: 32,
@@ -147,9 +144,9 @@ class PostMatchResultView extends GetView<PostMatchController> {
                       ),
                       StatsBarWidget(
                         firstTeamItem:
-                            controller.matchResult.value.stats['firstTeamAces'],
-                        secondTeamItem: controller
-                            .matchResult.value.stats['secondTeamAces'],
+                            controller.matchResult.stats['firstTeamAces'],
+                        secondTeamItem:
+                            controller.matchResult.stats['secondTeamAces'],
                       ),
                       const SizedBox(
                         height: 32,
@@ -165,10 +162,10 @@ class PostMatchResultView extends GetView<PostMatchController> {
                         height: 8,
                       ),
                       StatsBarWidget(
-                        firstTeamItem: controller
-                            .matchResult.value.stats['firstTeamWinners'],
-                        secondTeamItem: controller
-                            .matchResult.value.stats['secondTeamWinners'],
+                        firstTeamItem:
+                            controller.matchResult.stats['firstTeamWinners'],
+                        secondTeamItem:
+                            controller.matchResult.stats['secondTeamWinners'],
                       ),
                       const SizedBox(
                         height: 32,
@@ -184,10 +181,10 @@ class PostMatchResultView extends GetView<PostMatchController> {
                         height: 8,
                       ),
                       StatsBarWidget(
-                        firstTeamItem: controller
-                            .matchResult.value.stats['firstTeamErrors'],
-                        secondTeamItem: controller
-                            .matchResult.value.stats['secondTeamErrors'],
+                        firstTeamItem:
+                            controller.matchResult.stats['firstTeamErrors'],
+                        secondTeamItem:
+                            controller.matchResult.stats['secondTeamErrors'],
                       ),
                       const SizedBox(
                         height: 32,
@@ -204,9 +201,9 @@ class PostMatchResultView extends GetView<PostMatchController> {
                       ),
                       StatsBarWidget(
                         firstTeamItem: controller
-                            .matchResult.value.stats['firstTeamDoubleFaults'],
+                            .matchResult.stats['firstTeamDoubleFaults'],
                         secondTeamItem: controller
-                            .matchResult.value.stats['secondTeamDoubleFaults'],
+                            .matchResult.stats['secondTeamDoubleFaults'],
                       ),
                     ],
                   ),
@@ -366,6 +363,23 @@ class StatsBarWidget extends StatelessWidget {
     final bool _allZero =
         firstTeamItem == 0 && secondTeamItem == 0 ? true : false;
 
+    double _widthValue = _allZero
+        ? Get.width - 16
+        : Get.width *
+                        (((firstTeamItem * 100) /
+                                (secondTeamItem + firstTeamItem)) /
+                            100) -
+                    16 <
+                0
+            ? 0
+            : Get.width *
+                    (((firstTeamItem * 100) /
+                            (secondTeamItem + firstTeamItem)) /
+                        100) -
+                16;
+
+    Future<double> _width = Future<double>.value(_widthValue);
+
     return SizedBox(
       width: double.infinity,
       child: Row(
@@ -398,47 +412,40 @@ class StatsBarWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  height: 16,
-                  width: _allZero
-                      ? Get.width - 16
-                      : Get.width *
-                                      (((firstTeamItem * 100) /
-                                              (secondTeamItem +
-                                                  firstTeamItem)) /
-                                          100) -
-                                  16 <
-                              0
-                          ? 0
-                          : Get.width *
-                                  (((firstTeamItem * 100) /
-                                          (secondTeamItem + firstTeamItem)) /
-                                      100) -
-                              16,
-                  decoration: BoxDecoration(
-                    color: _allZero
-                        ? const Color(0xFFFFF9C0)
-                        : const Color(0xFFFCEC63),
-                    // color: Colors.black,
-                    borderRadius: secondTeamItem == 0
-                        ? const BorderRadius.all(Radius.circular(50))
-                        : const BorderRadius.only(
-                            topLeft: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                          ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      _allZero ? '' : firstTeamItem.toString(),
-                      style: TextStyle(
-                        fontWeight: _greater == 'first'
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                FutureBuilder<double>(
+                  future: _width,
+                  initialData: 0.0,
+                  builder: (context, snapshot) {
+                    return AnimatedContainer(
+                      duration: const Duration(seconds: 1),
+                      alignment: Alignment.centerLeft,
+                      height: 16,
+                      width: snapshot.data,
+                      decoration: BoxDecoration(
+                        color: _allZero
+                            ? const Color(0xFFFFF9C0)
+                            : const Color(0xFFFCEC63),
+                        // color: Colors.black,
+                        borderRadius: secondTeamItem == 0
+                            ? const BorderRadius.all(Radius.circular(50))
+                            : const BorderRadius.only(
+                                topLeft: Radius.circular(50),
+                                bottomLeft: Radius.circular(50),
+                              ),
                       ),
-                    ),
-                  ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          _allZero ? '' : firstTeamItem.toString(),
+                          style: TextStyle(
+                            fontWeight: _greater == 'first'
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

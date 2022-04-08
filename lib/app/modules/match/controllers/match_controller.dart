@@ -250,6 +250,7 @@ class MatchController extends GetxController {
             'totalPoints':
                 firstTeamTotalPoints.value + secondTeamTotalPoints.value,
           },
+          DateTime.now(),
         );
         Get.offNamedUntil(
           Routes.POST_MATCH_COUNTDOWN,
@@ -284,6 +285,7 @@ class MatchController extends GetxController {
             'totalPoints':
                 firstTeamTotalPoints.value + secondTeamTotalPoints.value,
           },
+          DateTime.now(),
         );
         Get.offNamedUntil(
           Routes.POST_MATCH_COUNTDOWN,

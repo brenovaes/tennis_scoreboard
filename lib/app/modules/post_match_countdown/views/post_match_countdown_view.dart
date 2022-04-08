@@ -25,7 +25,7 @@ class PostMatchCountdownView extends GetView<PostMatchCountdownController> {
                 Visibility(
                   visible: controller.counter.value <= 3,
                   child: const Text(
-                    'game,',
+                    'game',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 40,
@@ -37,7 +37,7 @@ class PostMatchCountdownView extends GetView<PostMatchCountdownController> {
                 Visibility(
                   visible: controller.counter.value <= 2,
                   child: const Text(
-                    'set,',
+                    'set',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 40,

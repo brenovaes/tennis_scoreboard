@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -21,17 +22,21 @@ Future<void> _initHive() async {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await _initHive();
-  runApp(
-    GetMaterialApp(
-      title: "Tennis Scoreboard",
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
-      theme: ThemeData(
-        fontFamily: 'Gilroy',
-        primarySwatch: Palette.ktodark,
-      ),
-      debugShowCheckedModeBanner: false,
-    ),
-  );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((_) => runApp(
+        GetMaterialApp(
+          title: "Tennis Scoreboard",
+          initialRoute: AppPages.INITIAL,
+          getPages: AppPages.routes,
+          theme: ThemeData(
+            fontFamily: 'Gilroy',
+            primarySwatch: Palette.ktodark,
+          ),
+          debugShowCheckedModeBanner: false,
+        ),
+      ));
 }
