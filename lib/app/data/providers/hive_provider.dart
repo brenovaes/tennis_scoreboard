@@ -8,4 +8,8 @@ class HiveProvider {
   Future<List<MatchResult>> loadAllMatches() async {
     return _matchesBox.toMap().values.toList();
   }
+
+  Future<void> saveNewMatch(MatchResult newMatch) async {
+    _matchesBox.add(newMatch);
+  }
 }

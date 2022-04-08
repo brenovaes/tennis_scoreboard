@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:tennis_scoreboard/app/data/models/match_result_model.dart';
 import 'package:tennis_scoreboard/app/data/models/match_settings_model.dart';
+import 'package:tennis_scoreboard/app/data/repositories/matches_repository.dart';
 import 'package:tennis_scoreboard/app/routes/app_pages.dart';
 
 class MatchController extends GetxController {
+  final MatchesRepository _matchesRepository = Get.find<MatchesRepository>();
+
   bool flag = true;
   Stream<int>? timerStream;
   StreamSubscription<int>? timerSubscription;
@@ -226,7 +229,7 @@ class MatchController extends GetxController {
     secondTeamPointsAdvantage.value = false;
   }
 
-  void _increaseSets(String team) {
+  Future<void> _increaseSets(String team) async {
     if (team == 'first') {
       firstTeamSets.value++;
       if (firstTeamSets.value > matchSettings.setsQty - firstTeamSets.value) {
@@ -252,6 +255,9 @@ class MatchController extends GetxController {
           },
           DateTime.now(),
         );
+
+        await _matchesRepository.saveNewMatch(_matchResult);
+
         Get.offNamedUntil(
           Routes.POST_MATCH_COUNTDOWN,
           (route) => Get.currentRoute == '/home',

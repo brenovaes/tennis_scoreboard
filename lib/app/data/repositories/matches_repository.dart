@@ -9,4 +9,8 @@ class MatchesRepository {
   Future<List<MatchResult>> loadAllMatches() async {
     return await provider.loadAllMatches();
   }
+
+  Future<void> saveNewMatch(MatchResult newMatch) async {
+    return await provider.saveNewMatch(newMatch);
+  }
 }

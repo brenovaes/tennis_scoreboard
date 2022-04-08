@@ -205,6 +205,19 @@ class PostMatchResultView extends GetView<PostMatchController> {
                         secondTeamItem: controller
                             .matchResult.stats['secondTeamDoubleFaults'],
                       ),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      SizedBox(
+                        width: Get.width - 16,
+                        child: Text(
+                          'Duração da partida: ${controller.matchResult.matchTime.toString()}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -216,15 +229,6 @@ class PostMatchResultView extends GetView<PostMatchController> {
                       labelColor: Colors.white,
                     ),
                   ),
-                  /* SizedBox(
-                    height: 50,
-                    width: Get.width - 50,
-                    child: CustomElevatedButton(
-                      onPressed: () => print(controller.matchResult.toString()),
-                      label: 'Print Stats',
-                      labelColor: Colors.white,
-                    ),
-                  ), */
                 ],
               ),
             ),
