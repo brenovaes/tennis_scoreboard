@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:tennis_scoreboard/app/data/models/match_result_model.dart';
@@ -163,32 +162,14 @@ class MatchController extends GetxController {
       if (((firstTeamPoints.value + secondTeamPoints.value) % 2) != 0) {
         firstTeamIsServing.value = !firstTeamIsServing.value;
       }
-      if (firstTeamPoints.value == matchSettings.tiebreak &&
-          secondTeamPoints.value <= matchSettings.tiebreak - 2) {
-        _increaseGames(team);
-        _addSetResultToList();
-        resetPoints();
-        _increaseSets(team);
-        resetGames();
-        isAtTieBreak.value = !isAtTieBreak.value;
-      } else if (secondTeamPoints.value == matchSettings.tiebreak &&
-          firstTeamPoints.value <= matchSettings.tiebreak - 2) {
-        _increaseGames(team);
-        _addSetResultToList();
-        resetPoints();
-        _increaseSets(team);
-        resetGames();
-        isAtTieBreak.value = !isAtTieBreak.value;
-      } else if (firstTeamPoints.value > matchSettings.tiebreak &&
-          firstTeamPoints.value - secondTeamPoints.value == 2) {
-        _increaseGames(team);
-        _addSetResultToList();
-        resetPoints();
-        _increaseSets(team);
-        resetGames();
-        isAtTieBreak.value = !isAtTieBreak.value;
-      } else if (secondTeamPoints.value > matchSettings.tiebreak &&
-          secondTeamPoints.value - firstTeamPoints.value == 2) {
+      if ((firstTeamPoints.value == matchSettings.tiebreak &&
+              secondTeamPoints.value <= matchSettings.tiebreak - 2) ||
+          (secondTeamPoints.value == matchSettings.tiebreak &&
+              firstTeamPoints.value <= matchSettings.tiebreak - 2) ||
+          (firstTeamPoints.value > matchSettings.tiebreak &&
+              firstTeamPoints.value - secondTeamPoints.value == 2) ||
+          (secondTeamPoints.value > matchSettings.tiebreak &&
+              secondTeamPoints.value - firstTeamPoints.value == 2)) {
         _increaseGames(team);
         _addSetResultToList();
         resetPoints();
@@ -229,45 +210,47 @@ class MatchController extends GetxController {
     secondTeamPointsAdvantage.value = false;
   }
 
+  void _saveMatchAndMoveOn(String team) async {
+    var _matchResult = MatchResult(
+      DateTime.now().millisecondsSinceEpoch,
+      matchSettings.teams,
+      setsList,
+      team,
+      '$hoursStr:$minutesStr:$secondsStr',
+      {
+        'firstTeamAces': firstTeamAces.value,
+        'secondTeamAces': secondTeamAces.value,
+        'firstTeamWinners': firstTeamWinners.value,
+        'secondTeamWinners': secondTeamWinners.value,
+        'firstTeamErrors': firstTeamErrors.value,
+        'secondTeamErrors': secondTeamErrors.value,
+        'firstTeamDoubleFaults': firstTeamDoubleFaults.value,
+        'secondTeamDoubleFaults': secondTeamDoubleFaults.value,
+        'firstTeamTotalPoints': firstTeamTotalPoints.value,
+        'secondTeamTotalPoints': secondTeamTotalPoints.value,
+        'totalPoints': firstTeamTotalPoints.value + secondTeamTotalPoints.value,
+      },
+      DateTime.now(),
+      [
+        firstTeamSets.value,
+        secondTeamSets.value,
+      ],
+    );
+
+    await _matchesRepository.saveNewMatch(_matchResult);
+
+    Get.offNamedUntil(
+      Routes.POST_MATCH_COUNTDOWN,
+      (route) => Get.currentRoute == '/home',
+      arguments: _matchResult,
+    );
+  }
+
   Future<void> _increaseSets(String team) async {
     if (team == 'first') {
       firstTeamSets.value++;
       if (firstTeamSets.value > matchSettings.setsQty - firstTeamSets.value) {
-        var _matchResult = MatchResult(
-          DateTime.now().millisecondsSinceEpoch,
-          matchSettings.teams,
-          setsList,
-          team,
-          '$hoursStr:$minutesStr:$secondsStr',
-          {
-            'firstTeamAces': firstTeamAces.value,
-            'secondTeamAces': secondTeamAces.value,
-            'firstTeamWinners': firstTeamWinners.value,
-            'secondTeamWinners': secondTeamWinners.value,
-            'firstTeamErrors': firstTeamErrors.value,
-            'secondTeamErrors': secondTeamErrors.value,
-            'firstTeamDoubleFaults': firstTeamDoubleFaults.value,
-            'secondTeamDoubleFaults': secondTeamDoubleFaults.value,
-            'firstTeamTotalPoints': firstTeamTotalPoints.value,
-            'secondTeamTotalPoints': secondTeamTotalPoints.value,
-            'totalPoints':
-                firstTeamTotalPoints.value + secondTeamTotalPoints.value,
-          },
-          DateTime.now(),
-          [
-            firstTeamSets.value,
-            secondTeamSets.value,
-          ],
-        );
-
-        await _matchesRepository.saveNewMatch(_matchResult);
-
-        Get.offNamedUntil(
-          Routes.POST_MATCH_COUNTDOWN,
-          (route) => Get.currentRoute == '/home',
-          arguments: _matchResult,
-        );
-        //Get.offAndToNamed(Routes.POST_MATCH_COUNTDOWN, arguments: _matchResult);
+        _saveMatchAndMoveOn(team);
       } else {
         resetGames();
         currentSet.value++;
@@ -275,37 +258,7 @@ class MatchController extends GetxController {
     } else {
       secondTeamSets.value++;
       if (secondTeamSets.value > matchSettings.setsQty - secondTeamSets.value) {
-        var _matchResult = MatchResult(
-          DateTime.now().millisecondsSinceEpoch,
-          matchSettings.teams,
-          setsList,
-          team,
-          '$hoursStr:$minutesStr:$secondsStr',
-          {
-            'firstTeamAces': firstTeamAces.value,
-            'secondTeamAces': secondTeamAces.value,
-            'firstTeamWinners': firstTeamWinners.value,
-            'secondTeamWinners': secondTeamWinners.value,
-            'firstTeamErrors': firstTeamErrors.value,
-            'secondTeamErrors': secondTeamErrors.value,
-            'firstTeamDoubleFaults': firstTeamDoubleFaults.value,
-            'secondTeamDoubleFaults': secondTeamDoubleFaults.value,
-            'firstTeamTotalPoints': firstTeamTotalPoints.value,
-            'secondTeamTotalPoints': secondTeamTotalPoints.value,
-            'totalPoints':
-                firstTeamTotalPoints.value + secondTeamTotalPoints.value,
-          },
-          DateTime.now(),
-          [
-            firstTeamSets.value,
-            secondTeamSets.value,
-          ],
-        );
-        Get.offNamedUntil(
-          Routes.POST_MATCH_COUNTDOWN,
-          (route) => Get.currentRoute == '/home',
-          arguments: _matchResult,
-        );
+        _saveMatchAndMoveOn(team);
       } else {
         resetGames();
         currentSet.value++;
@@ -339,20 +292,14 @@ class MatchController extends GetxController {
         secondTeamGames.value == matchSettings.gamesQty) {
       isAtTieBreak.value = true;
       resetPoints();
-    } else if (firstTeamGames.value == matchSettings.gamesQty + 1 &&
-        secondTeamGames.value == matchSettings.gamesQty - 1) {
-      _addSetResultToList();
-      _increaseSets(team);
-    } else if (secondTeamGames.value == matchSettings.gamesQty + 1 &&
-        firstTeamGames.value == matchSettings.gamesQty - 1) {
-      _addSetResultToList();
-      _increaseSets(team);
-    } else if (firstTeamGames.value == matchSettings.gamesQty &&
-        secondTeamGames.value < matchSettings.gamesQty - 1) {
-      _addSetResultToList();
-      _increaseSets(team);
-    } else if (secondTeamGames.value == matchSettings.gamesQty &&
-        firstTeamGames.value < matchSettings.gamesQty - 1) {
+    } else if ((firstTeamGames.value == matchSettings.gamesQty + 1 &&
+            secondTeamGames.value == matchSettings.gamesQty - 1) ||
+        (secondTeamGames.value == matchSettings.gamesQty + 1 &&
+            firstTeamGames.value == matchSettings.gamesQty - 1) ||
+        (firstTeamGames.value == matchSettings.gamesQty &&
+            secondTeamGames.value < matchSettings.gamesQty - 1) ||
+        (secondTeamGames.value == matchSettings.gamesQty &&
+            firstTeamGames.value < matchSettings.gamesQty - 1)) {
       _addSetResultToList();
       _increaseSets(team);
     }

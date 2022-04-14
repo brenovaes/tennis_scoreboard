@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -508,7 +506,7 @@ class MatchView extends GetView<MatchController> {
                       ScoreButtonsWidget(team: 'second'),
                     ],
                   ),
-                  Obx(
+                  /* Obx(
                     () => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -582,7 +580,7 @@ class MatchView extends GetView<MatchController> {
                         ),
                       ],
                     ),
-                  ),
+                  ), */
                   /* ElevatedButton(
                     onPressed: () => controller.resetPoints(),
                     child: const Text('Zerar pontos'),
