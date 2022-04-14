@@ -13,4 +13,8 @@ class MatchesRepository {
   Future<void> saveNewMatch(MatchResult newMatch) async {
     return await provider.saveNewMatch(newMatch);
   }
+
+  Future<void> deleteAllMatches() async {
+    return await provider.deleteAllMatches();
+  }
 }

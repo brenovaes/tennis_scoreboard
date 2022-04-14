@@ -15,24 +15,27 @@ class MatchResult extends HiveObject {
   @HiveField(3)
   String winner;
   @HiveField(4)
-  String matchTime;
+  String matchDuration;
   @HiveField(5)
   Map<String, dynamic> stats;
   @HiveField(6)
   DateTime date;
+  @HiveField(7)
+  List<int> result;
 
   MatchResult(
     this.id,
     this.teams,
     this.sets,
     this.winner,
-    this.matchTime,
+    this.matchDuration,
     this.stats,
     this.date,
+    this.result,
   );
 
   @override
   String toString() {
-    return 'MatchResult(id: $id, teams: $teams, sets: $sets, winner: $winner, matchTime: $matchTime, stats: $stats, date: $date)';
+    return 'MatchResult(id: $id, teams: $teams, sets: $sets, winner: $winner, matchDuration: $matchDuration, stats: $stats, date: $date, result: $result)';
   }
 }

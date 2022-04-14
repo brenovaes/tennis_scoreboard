@@ -12,4 +12,8 @@ class HiveProvider {
   Future<void> saveNewMatch(MatchResult newMatch) async {
     _matchesBox.add(newMatch);
   }
+
+  Future<void> deleteAllMatches() async {
+    _matchesBox.clear();
+  }
 }

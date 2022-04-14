@@ -211,7 +211,7 @@ class PostMatchResultView extends GetView<PostMatchController> {
                       SizedBox(
                         width: Get.width - 16,
                         child: Text(
-                          'Duração da partida: ${controller.matchResult.matchTime.toString()}',
+                          'Duração da partida: ${controller.matchResult.matchDuration.toString()}',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 18,

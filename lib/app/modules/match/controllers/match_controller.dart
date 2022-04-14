@@ -254,6 +254,10 @@ class MatchController extends GetxController {
                 firstTeamTotalPoints.value + secondTeamTotalPoints.value,
           },
           DateTime.now(),
+          [
+            firstTeamSets.value,
+            secondTeamSets.value,
+          ],
         );
 
         await _matchesRepository.saveNewMatch(_matchResult);
@@ -292,6 +296,10 @@ class MatchController extends GetxController {
                 firstTeamTotalPoints.value + secondTeamTotalPoints.value,
           },
           DateTime.now(),
+          [
+            firstTeamSets.value,
+            secondTeamSets.value,
+          ],
         );
         Get.offNamedUntil(
           Routes.POST_MATCH_COUNTDOWN,

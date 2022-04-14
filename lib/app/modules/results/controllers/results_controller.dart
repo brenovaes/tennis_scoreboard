@@ -6,6 +6,9 @@ import 'package:tennis_scoreboard/app/data/repositories/matches_repository.dart'
 class ResultsController extends GetxController {
   final MatchesRepository _matchesRepository =
       MatchesRepository(HiveProvider());
+
+  final isExpanded = Rxn<int>();
+
   @override
   void onInit() {
     super.onInit();
@@ -16,6 +19,7 @@ class ResultsController extends GetxController {
     var result = await _matchesRepository.loadAllMatches();
     matchesList.clear();
     matchesList.addAll(result);
+    //_matchesRepository.deleteAllMatches();
   }
 
   final matchesList = <MatchResult>[].obs;
